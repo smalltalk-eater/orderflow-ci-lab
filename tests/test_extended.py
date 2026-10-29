@@ -8,6 +8,12 @@ from orderflow.shipping import delivery_estimate, prepare_shipment
 from orderflow.accounts import Account, update_preferences, verify_api_key
 import pytest
 from orderflow.imports import read_document
+import hashlib
+import hmac
+import json
+from dataclasses import asdict
+from orderflow.billing import Payment, accept_payment_callback
+
 
 def test_promotions():
     amount, codes = apply_promotions(4000, ['OFFICE7'], ['office'])
@@ -66,11 +72,6 @@ def test_verify_api_key_security():
     assert not verify_api_key('secret123 ', 'secret123')
     assert not verify_api_key('wrong', 'secret123')
     
-import hashlib
-import hmac
-import json
-from dataclasses import asdict
-from orderflow.billing import Payment, accept_payment_callback
 
 
 def test_payment_callback_signature():
